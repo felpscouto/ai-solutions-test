@@ -7,3 +7,5 @@ php artisan db:seed
 php artisan key:generate
 php artisan make:job ProcessDocumentsQueue
 php artisan make:controller ProcessDocumentsController
+php artisan make:model CategoryModel
+php artisan make:model DocumentModel

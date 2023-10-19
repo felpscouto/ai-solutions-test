@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProcessDocumentsController;
+use App\Http\Controllers\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +22,4 @@ Route::get('/process', function () {
     return view('documents/process');
 });
 
-Route::post('/upload-json-file', [ProcessDocumentsController::class, 'uploadJsonFile']);
+Route::post('/upload-json-file', [IndexController::class, 'uploadJsonFile']);
