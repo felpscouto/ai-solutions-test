@@ -15,7 +15,7 @@ Este teste utiliza PHP 8.1, Laravel 10 e um banco de dados SQLite simples.
 
 ### Primeira Tarefa:
 
-Crítica das Migrations e Seeders: Aponte problemas, se houver, e solucione; Implemente melhorias;
+Crítica das migrations e seeders: aponte problemas, se houver, e solucione; Implemente melhorias;
 
 ### Segunda Tarefa:
 

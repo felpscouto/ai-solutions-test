@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->bigInteger('category_id');
-            $table->string('title', 60);
+            $table->unsignedBigInteger('category_id'); // Alterei o campo para unsignedBigInteger, pois o mesmo também pode ser nulo
+            $table->string('title', 120); // O campo deve ser um pouco maior, pois a quantidade da caracteres inicial é pequena
             $table->text('contents');
 
             $table->foreign('category_id')
                 ->references('id')
-                ->on('categories')
-                ->onDelete('cascade');
+                ->on('categories');
+                // Removi o cascade on delete para evitar que a remoção de um documento remova também suas categorias
         });
     }
 

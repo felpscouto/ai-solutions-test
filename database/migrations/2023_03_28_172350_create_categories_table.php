@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name', 20);
+            $table->string('name', 120); // O campo deve ser um pouco maior, pois a quantidade da caracteres inicial é pequena
         });
     }
 

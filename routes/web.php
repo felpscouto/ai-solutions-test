@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProcessDocumentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('documents/index');
 });
+
+Route::get('/process', function () {
+    return view('documents/process');
+});
+
+Route::post('/upload-json-file', [ProcessDocumentsController::class, 'uploadJsonFile']);
