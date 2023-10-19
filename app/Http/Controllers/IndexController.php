@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\CategoryModel;
 use App\Models\DocumentModel;
 
-class IndexController extends Controller
-{
+class IndexController extends Controller {
     public function uploadJsonFile(Request $request) {
         $response = [
             "code" => 500,
@@ -36,22 +35,10 @@ class IndexController extends Controller
 
                 // Percorrendo o array de dados do JSON
                 foreach($jsonFileToArray['documentos'] as $document) {
-                    // Tentando encontrar a categoria com o nome fornecido
-                    $category = CategoryModel::firstOrNew(['name' => trim($document['categoria'])]);
-                    
-                    // Verificando se a categoria já existe no banco de dados
-                    if(!$category->exists) {
-                        // Se a categoria não existir, é criada no banco de dados
-                        $category->name = trim($document['categoria']);
-                        $category->save();
-                    }
+                    $categoryId = $this->categoryCreation($document['categoria']);
 
                     // Inserindo o novo documento
-                    $brandnewDocument = new DocumentModel();
-                    $brandnewDocument->title = $document['titulo'];
-                    $brandnewDocument->contents = $document['conteúdo'];
-                    $brandnewDocument->category_id = $category->id;
-                    $brandnewDocument->save();
+                    $this->documentCreation($document, $categoryId);
                 }
 
                 // Se tudo ocorrer bem, devemos atualizar nossa variável $response
@@ -70,5 +57,28 @@ class IndexController extends Controller
         }
 
         return response()->json([$response], $response['code']);
+    }
+
+    private function categoryCreation($name) {
+        // Tentando encontrar a categoria com o nome fornecido
+        $category = CategoryModel::firstOrNew(['name' => trim($name)]);
+                    
+        // Verificando se a categoria já existe no banco de dados para não haver duplicidade
+        if(!$category->exists) {
+            // Se a categoria não existir, é criada no banco de dados
+            $category->name = trim($name);
+            $category->save();
+        }
+
+        return $category->id;
+    }
+
+    private function documentCreation($document, $categoryId) {
+        // Inserindo o novo documento
+        $brandnewDocument = new DocumentModel();
+        $brandnewDocument->title = $document['titulo'];
+        $brandnewDocument->contents = $document['conteúdo'];
+        $brandnewDocument->category_id = $categoryId;
+        $brandnewDocument->save();
     }
 }
