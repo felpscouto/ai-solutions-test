@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
     <style>
         body {
+            max-height: 100vh;
+            overflow: hidden;
             color: #FFFFFF;
             background-color: #2d333b;
             margin: 0;
@@ -25,19 +27,24 @@
             font-size: 14px !important;
         }
 
-        .container-fluid {
-            justify-content: start !important;
-        }
-
         .navbar-brand {
             margin-right: 20px;
         }
 
+        .container-fluid {
+            justify-content: start !important;
+        }
+
         .table {
-            min-width: 700px;
+            height: 500px;
+            overflow: auto;
             background-color: #FFFFFF;
             border-radius: 4px;
-            border-collapse: collapse; /* Remove espaçamento entre linhas */
+            border-collapse: collapse;
+        }
+
+        .table tr {
+            min-width: 100%;
         }
 
         .table th,
@@ -67,9 +74,9 @@
     </nav>
     <main class="col">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-            <div class="text-center">
+            <div class="documents-list-container text-center">
                 <h1>Processamento de Documentos</h1>
-                <table class="table mt-4">
+                <table class="table mt-4" @if(count($documents) > 0) style="display: block;" @endif>
                     <thead>
                         <tr>
                             <th>Categoria</th>
@@ -78,13 +85,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($documents as $document)
+                        @forelse($documents as $document)
                             <tr>
                                 <td>{{ $document->category->name }}</td>
                                 <td>{{ $document->title }}</td>
                                 <td><code>{{ Illuminate\Support\Str::limit($document->contents, 20, $end = '...') }}</code></td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="3">Não há nenhum documento para importar.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
                 <p class="mt-4">Você pode processar os documentos importados abaixo.</p>
@@ -104,11 +115,37 @@
                 confirmButtonText: 'Sim',
                 cancelButtonText: 'Não'
             }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire('Processamento iniciado!', 'Os documentos estão sendo processados.', 'success');
+                if(result.isConfirmed) {
+                    Swal.fire('Processamento iniciado!', 'Os documentos estão sendo processados.', 'success')
+
+                    fetch("{{ url('process-queue') }}", {
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        method: 'POST'
+                    })
+                    .then(response => {
+                        if(response.ok) {
+                            window.location.reload()
+                        }
+                        
+                        else {
+                            Swal.fire('Erro', 'Erro no servidor.', 'error')
+                        }
+                    })
+                    .then(data => {
+                        Swal.fire('Processamento finalizado!', 'Sua fila foi processada corretamente.', 'success').then((result) => {
+                            if(result.isConfirmed) {
+                                location.href = "{{ url('process') }}"
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        Swal.fire('Erro', 'Erro na requisição.', 'error')
+                    })
                 }
-            });
-        });
+            })
+        })
     </script>
 </body>
 </html>

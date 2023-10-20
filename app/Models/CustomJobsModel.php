@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoryModel extends Model {
+class CustomJobsModel extends Model {
     use HasFactory;
 
     /**
@@ -13,12 +13,5 @@ class CategoryModel extends Model {
      *
      * @var string
      */
-    protected $table = 'categories';
-
-    /**
-     * Permitir economizar por meio de criação e métodos massivos.
-     *
-     * @var string
-     */
-    protected $fillable = ['name'];
+    protected $table = 'custom_jobs';
 }

@@ -19,7 +19,7 @@ Crítica das migrations e seeders: aponte problemas, se houver, e solucione; Imp
 
 ### Segunda Tarefa:
 
-Crie a estrutura completa de uma tela que permita adicionar a importação do arquivo `storage/data/2023-03-28.json`, para a tabela `documents`. onde cada registro representado neste arquivo seja adicionado a uma fila para importação.
+Crie a estrutura completa de uma tela que permita adicionar a importação do arquivo `storage/data/2023-03-28.json`, para a tabela `documents`, onde cada registro representado neste arquivo seja adicionado a uma fila para importação.
 
 Feito isso crie uma tela com um botão simples que dispara o processamento desta fila.
 

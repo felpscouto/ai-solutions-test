@@ -23,4 +23,11 @@ class DocumentModel extends Model {
     public function category() {
         return $this->belongsTo(CategoryModel::class);
     }
+
+    /**
+     * Permitir economizar por meio de criação e métodos massivos.
+     *
+     * @var string
+     */
+    protected $fillable = ['queue_status'];
 }

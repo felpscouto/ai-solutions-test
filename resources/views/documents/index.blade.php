@@ -79,21 +79,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
     <script>
-        // Função para verificar se um arquivo JSON foi carregado
+        // Verificando se um arquivo JSON foi carregado
         function isJSONFileLoaded() {
-            const selectedFile = document.getElementById("file-input").files[0];
-            return selectedFile && selectedFile.name.endsWith('.json');
+            const selectedFile = document.getElementById("file-input").files[0]
+            return selectedFile && selectedFile.name.endsWith('.json')
         }
 
-        // Função para enviar o arquivo JSON para o servidor via AJAX
+        // Enviando o arquivo JSON para o servidor via AJAX
         function uploadJSONFile() {
-            if (isJSONFileLoaded()) {
-                const fileInput = document.getElementById("file-input");
-                const selectedFile = fileInput.files[0];
+            if(isJSONFileLoaded()) {
+                const fileInput = document.getElementById("file-input")
+                const selectedFile = fileInput.files[0]
 
-                // Crie um objeto FormData para enviar o arquivo
-                const formData = new FormData();
-                formData.append('jsonFile', selectedFile);
+                // Criando um objeto FormData para enviar o arquivo
+                const formData = new FormData()
+                formData.append('jsonFile', selectedFile)
 
                 // Faça a solicitação POST usando a função fetch
                 fetch("{{ url('upload-json-file') }}", {
@@ -104,47 +104,56 @@
                     body: formData,
                 })
                 .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Erro no servidor');
+                    if(response.ok) {
+                        return response.json()
+                    }
+                    
+                    else {
+                        Swal.fire('Erro', 'Erro no servidor.', 'error')
                     }
                 })
                 .then(data => {
-                    // Lógica a ser executada após o upload bem-sucedido
-                    Swal.fire('Upload bem-sucedido!', '', 'success');
+                    Swal.fire('Upload bem-sucedido!', 'Seu arquivo JSON foi adicionado à fila corretamente.', 'success').then((result) => {
+                        if(result.isConfirmed) {
+                            location.href = "{{ url('process') }}"
+                        }
+                    })
                 })
                 .catch(error => {
-                    // Trate os erros
-                    Swal.fire('Erro', 'Ocorreu um erro durante o upload.', 'error');
-                });
-            } else {
-                Swal.fire('Erro', 'Selecione um arquivo JSON antes de fazer o upload.', 'error');
+                    Swal.fire('Erro', 'Ocorreu um erro durante o upload.', 'error')
+                })
+            }
+            
+            else {
+                Swal.fire('Erro', 'Selecione um arquivo JSON antes de fazer o upload.', 'error')
             }
         }
 
-        // Adicione a funcionalidade do SweetAlert ao botão "Adicionar na fila"
-        document.getElementById("add-to-queue-button").addEventListener("click", uploadJSONFile);
+        // Adicionando a funcionalidade do SweetAlert ao botão "Adicionar na fila"
+        document.getElementById("add-to-queue-button").addEventListener("click", uploadJSONFile)
 
-        // Funcionalidade para abrir o seletor de arquivo ao clicar no botão "Importar arquivo JSON"
-        document.getElementById("import-button").addEventListener("click", function () {
-            document.getElementById("file-input").click();
-        });
+        // Abrindo o seletor de arquivo ao clicar no botão "Importar arquivo JSON"
+        document.getElementById("import-button").addEventListener("click", function() {
+            document.getElementById("file-input").click()
+        })
 
-        // Funcionalidade para exibir o nome do arquivo apenas quando um arquivo for selecionado
-        document.getElementById("file-input").addEventListener("change", function () {
-            const fileInput = document.getElementById("file-input");
-            const selectedFile = fileInput.files[0];
-            const selectedFileNameElement = document.getElementById("selected-file-name");
-            if (selectedFile) {
-                // Exibe o nome do arquivo abaixo dos botões
-                selectedFileNameElement.textContent = "Arquivo selecionado: " + selectedFile.name;
-                selectedFileNameElement.style.display = "block"; // Mostra o elemento
-            } else {
-                // Esconde o elemento quando nenhum arquivo está selecionado
-                selectedFileNameElement.style.display = "none";
+        // Exibindo o nome do arquivo apenas quando um arquivo for selecionado
+        document.getElementById("file-input").addEventListener("change", function() {
+            const fileInput = document.getElementById("file-input")
+            const selectedFile = fileInput.files[0]
+            const selectedFileNameElement = document.getElementById("selected-file-name")
+
+            if(selectedFile) {
+                // Exibindo o nome do arquivo abaixo dos botões
+                selectedFileNameElement.textContent = "Arquivo selecionado: " + selectedFile.name
+                selectedFileNameElement.style.display = "block"
             }
-        });
+            
+            else {
+                // Escondendo o elemento quando nenhum arquivo está selecionado
+                selectedFileNameElement.style.display = "none"
+            }
+        })
     </script>
 </body>
 </html>
