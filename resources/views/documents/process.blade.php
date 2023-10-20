@@ -80,7 +80,7 @@
                     <tbody>
                         @foreach($documents as $document)
                             <tr>
-                                <td>{{ $document->category_id }}</td>
+                                <td>{{ $document->category->name }}</td>
                                 <td>{{ $document->title }}</td>
                                 <td><code>{{ Illuminate\Support\Str::limit($document->contents, 20, $end = '...') }}</code></td>
                             </tr>

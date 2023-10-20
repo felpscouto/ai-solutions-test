@@ -19,3 +19,4 @@ Route::get('/', [IndexController::class, 'index']);
 Route::post('/upload-json-file', [IndexController::class, 'uploadJsonFile']);
 
 Route::get('/process', [ProcessController::class, 'index']);
+Route::post('/process-queue', [IndexController::class, 'processQueue']);

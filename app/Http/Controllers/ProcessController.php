@@ -11,4 +11,8 @@ class ProcessController extends Controller {
 
         return view("documents/process", compact('documents'));
     }
+
+    public function processQueue() {
+        
+    }
 }
