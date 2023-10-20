@@ -34,6 +34,7 @@
         }
 
         .table {
+            min-width: 700px;
             background-color: #FFFFFF;
             border-radius: 4px;
             border-collapse: collapse; /* Remove espaçamento entre linhas */
@@ -42,6 +43,18 @@
         .table th,
         .table td {
             padding: 8px;
+            vertical-align: middle;
+        }
+
+        code {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -65,21 +78,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Cat1</td>
-                            <td>Título 1</td>
-                            <td>Conteúdo 1</td>
-                        </tr>
-                        <tr>
-                            <td>Cat2</td>
-                            <td>Título 2</td>
-                            <td>Conteúdo 2</td>
-                        </tr>
-                        <tr>
-                            <td>Cat3</td>
-                            <td>Título 3</td>
-                            <td>Conteúdo 3</td>
-                        </tr>
+                        @foreach($documents as $document)
+                            <tr>
+                                <td>{{ $document->category_id }}</td>
+                                <td>{{ $document->title }}</td>
+                                <td><code>{{ Illuminate\Support\Str::limit($document->contents, 20, $end = '...') }}</code></td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 <p class="mt-4">Você pode processar os documentos importados abaixo.</p>

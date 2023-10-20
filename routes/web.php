@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\ProcessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +15,7 @@ use App\Http\Controllers\IndexController;
 |
 */
 
-Route::get('/', function () {
-    return view('documents/index');
-});
-
-Route::get('/process', function () {
-    return view('documents/process');
-});
-
+Route::get('/', [IndexController::class, 'index']);
 Route::post('/upload-json-file', [IndexController::class, 'uploadJsonFile']);
+
+Route::get('/process', [ProcessController::class, 'index']);

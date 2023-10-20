@@ -9,6 +9,10 @@ use App\Models\CategoryModel;
 use App\Models\DocumentModel;
 
 class IndexController extends Controller {
+    public function index() {
+        return view("documents/index");
+    }
+
     public function uploadJsonFile(Request $request) {
         $response = [
             "code" => 500,
@@ -58,7 +62,6 @@ class IndexController extends Controller {
 
         return response()->json([$response], $response['code']);
     }
-
     private function categoryCreation($name) {
         // Tentando encontrar a categoria com o nome fornecido
         $category = CategoryModel::firstOrNew(['name' => trim($name)]);
@@ -72,7 +75,6 @@ class IndexController extends Controller {
 
         return $category->id;
     }
-
     private function documentCreation($document, $categoryId) {
         // Inserindo o novo documento
         $brandnewDocument = new DocumentModel();
