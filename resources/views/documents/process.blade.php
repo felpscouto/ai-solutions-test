@@ -86,7 +86,7 @@
                     </thead>
                     <tbody>
                         @forelse($documents as $document)
-                            <tr>
+                            <tr class="db-row">
                                 <td>{{ $document->category->name }}</td>
                                 <td>{{ $document->title }}</td>
                                 <td><code>{{ Illuminate\Support\Str::limit($document->contents, 20, $end = '...') }}</code></td>
@@ -106,7 +106,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById("process-button").addEventListener("click", function () {
+        window.onload = function () {
+            fetch("{{ url('start-queue') }}", {
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                method: 'GET'
+            })
+        }
+
+        document.getElementById("process-button").addEventListener("click", function() {
             Swal.fire({
                 title: 'Confirmação',
                 text: 'Tem certeza de que deseja processar os documentos?',
@@ -115,9 +124,22 @@
                 confirmButtonText: 'Sim',
                 cancelButtonText: 'Não'
             }).then((result) => {
-                if(result.isConfirmed) {
-                    Swal.fire('Processamento iniciado!', 'Os documentos estão sendo processados.', 'success')
+                let tbody = document.querySelector("table tbody")
+                let trElements = tbody.querySelectorAll("tr.db-row")
 
+                if(trElements.length < 1) {
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Você não tem documentos para processar.',
+                        icon: 'error'
+                    })
+
+                    return false
+                }
+
+                Swal.close()
+
+                if(result.isConfirmed) {
                     fetch("{{ url('process-queue') }}", {
                         headers: {
                             'X-CSRF-TOKEN': "{{ csrf_token() }}"
@@ -126,7 +148,7 @@
                     })
                     .then(response => {
                         if(response.ok) {
-                            window.location.reload()
+                            // window.location.reload()
                         }
                         
                         else {

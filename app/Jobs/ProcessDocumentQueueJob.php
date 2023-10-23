@@ -14,8 +14,6 @@ use App\Models\CustomJobsModel;
 class ProcessDocumentQueueJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $delete = false;
-
     protected $document;
 
     public function __construct(DocumentModel $document) {

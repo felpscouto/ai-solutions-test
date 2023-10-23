@@ -17,6 +17,11 @@ class ProcessController extends Controller {
 
         return view("documents/process", compact('documents'));
     }
+    
+    public function startQueue() {
+        // Inicializando a queue
+        Artisan::call('queue:work', []);
+    }
 
     public function processQueue() {
         $response = [
@@ -32,13 +37,10 @@ class ProcessController extends Controller {
             foreach($documents as $document) {
                 // Atualizando o campo queue_status como 'processing'
                 $document->update(['queue_status' => 'processing']);
+
+                // Enviando documentos para a fila
+                dispatch(new ProcessDocumentQueueJob($document));
             }
-
-            // Parando fila
-            // Artisan::call('queue:restart');
-
-            // Rodando a fila
-            // Artisan::call('queue:work');
 
             // Se tudo ocorrer bem, devemos atualizar nossa variável $response
             $response['code'] = 200;

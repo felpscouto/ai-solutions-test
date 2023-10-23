@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CategoryModel;
 use App\Models\DocumentModel;
-use App\Jobs\ProcessDocumentQueueJob;
 
 class IndexController extends Controller {
     public function index() {
@@ -81,8 +80,5 @@ class IndexController extends Controller {
         $brandnewDocument->contents = $document['conteúdo'];
         $brandnewDocument->category_id = $categoryId;
         $brandnewDocument->save();
-
-        // Enviando documentos para a fila
-        dispatch(new ProcessDocumentQueueJob($brandnewDocument));
     }
 }

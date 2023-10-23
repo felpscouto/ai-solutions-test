@@ -18,5 +18,6 @@ use App\Http\Controllers\ProcessController;
 Route::get('/', [IndexController::class, 'index']);
 Route::post('/upload-json-file', [IndexController::class, 'uploadJsonFile']);
 
+Route::get('/start-queue', [ProcessController::class, 'startQueue']);
 Route::get('/process', [ProcessController::class, 'index']);
 Route::post('/process-queue', [ProcessController::class, 'processQueue']);
